@@ -98,4 +98,99 @@ Thiết kế các bảng với khóa chính (Primary Key) và khóa ngoại (For
 Trả lời:
 Sử dụng các cơ chế đồng bộ như Two-Phase Commit (2PC) hoặc Consensus Protocols (ví dụ: Paxos, Raft).
 Áp dụng chiến lược Eventual Consistency cho các hệ thống yêu cầu hiệu năng cao (như NoSQL).
+Partitioning (Phân vùng dữ liệu)
+Mục đích: Cải thiện quản lý và hiệu năng bằng cách chia bảng lớn thành nhiều phần nhỏ.
+Các loại partitioning:
+Range Partitioning: Theo phạm vi giá trị (ví dụ: theo ngày, tháng).
+List Partitioning: Theo giá trị cụ thể (ví dụ: theo quốc gia).
+Hash Partitioning: Sử dụng hàm băm để phân vùng.
+Triển khai:
+Với MySQL:
+sql
+Sao chép
+Chỉnh sửa
+CREATE TABLE table_name (
+    column1 INT,
+    column2 DATE
+)
+PARTITION BY RANGE (column2) (
+    PARTITION p0 VALUES LESS THAN (1991),
+    PARTITION p1 VALUES LESS THAN (2000),
+    PARTITION p2 VALUES LESS THAN MAXVALUE
+);
+2. Chuẩn hóa dữ liệu
+Database Normalization (3NF, BCNF)
+Mục đích: Loại bỏ dữ liệu dư thừa, đảm bảo tính nhất quán và dễ bảo trì.
+Các bước chuẩn hóa:
+1NF (First Normal Form): Loại bỏ các giá trị lặp và đảm bảo từng cột chỉ chứa giá trị nguyên tử.
+2NF (Second Normal Form): Xóa bỏ phụ thuộc một phần vào khóa chính.
+3NF (Third Normal Form): Xóa bỏ phụ thuộc bắc cầu.
+BCNF (Boyce-Codd Normal Form): Mọi phụ thuộc đều xuất phát từ siêu khóa.
+Triển khai:
+Phân tích dữ liệu và nghiệp vụ để thiết kế các bảng.
+Xác định khóa chính, khóa ngoại.
+3. ACID (Atomicity, Consistency, Isolation, Durability)
+Mục đích: Đảm bảo tính nhất quán và độ tin cậy của cơ sở dữ liệu.
+Triển khai:
+Atomicity: Sử dụng giao dịch (transaction).
+sql
+Sao chép
+Chỉnh sửa
+BEGIN TRANSACTION;
+UPDATE account SET balance = balance - 100 WHERE account_id = 1;
+UPDATE account SET balance = balance + 100 WHERE account_id = 2;
+COMMIT;
+Consistency: Đảm bảo dữ liệu tuân thủ ràng buộc (constraints).
+Isolation: Sử dụng các mức cô lập (isolation level):
+READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE.
+sql
+Sao chép
+Chỉnh sửa
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+Durability: Cơ sở dữ liệu đảm bảo lưu trữ bền vững sau khi giao dịch hoàn thành.
+Thiết kế bảng và mối quan hệ từ nghiệp vụ
+Bước 1: Hiểu rõ yêu cầu nghiệp vụ và các thực thể.
+Bước 2: Xác định thực thể (entity) và thuộc tính (attribute).
+Bước 3: Xác định các quan hệ (1-1, 1-N, N-N).
+Bước 4: Thiết kế sơ đồ ERD (Entity-Relationship Diagram).
+Bước 5: Tạo bảng với khóa chính, khóa ngoại, và các ràng buộc:
+sql
+Sao chép
+Chỉnh sửa
+CREATE TABLE orders (
+    order_id INT PRIMARY KEY,
+    customer_id INT,
+    order_date DATE,
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+);
+5. Database Index
+Cách sử dụng các loại index:
+Clustered Index: Tự động tạo trên khóa chính.
+Non-clustered Index: Tạo cho các cột thường xuyên truy vấn.
+Unique Index: Đảm bảo không có giá trị trùng lặp.
+sql
+Sao chép
+Chỉnh sửa
+CREATE UNIQUE INDEX idx_unique_email ON users (email);
+Covering Index: Đảm bảo toàn bộ dữ liệu cho truy vấn nằm trong index.
+6. Tối ưu hóa truy vấn
+Hiểu truy vấn:
+Sử dụng EXPLAIN để kiểm tra kế hoạch truy vấn:
+sql
+Sao chép
+Chỉnh sửa
+EXPLAIN SELECT * FROM orders WHERE customer_id = 10;
+Cải thiện:
+Tối ưu JOIN bằng cách index các khóa ngoại.
+Tránh sử dụng SELECT *, thay vào đó chỉ chọn cột cần thiết.
+Sử dụng các subquery hoặc CTE hiệu quả.
+7. Read Replicas và cơ chế chịu tải
+Read replicas: Tạo bản sao chỉ đọc của cơ sở dữ liệu chính.
+
+Sử dụng trong MySQL:
+Cấu hình replication (master-slave).
+Ứng dụng: Chuyển các truy vấn đọc sang replica để giảm tải database chính.
+Load balancing: Dùng các công cụ như HAProxy hoặc AWS RDS Proxy để phân phối truy vấn.
+
+
 
