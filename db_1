@@ -1,0 +1,73 @@
+1. Indexing là gì? Tại sao cần sử dụng index trong cơ sở dữ liệu?
+  Trả lời:
+  Indexing là một cấu trúc dữ liệu đặc biệt được tạo ra để cải thiện tốc độ truy vấn của cơ sở dữ liệu.
+  Index hoạt động như một bảng tra cứu, giúp tìm kiếm dữ liệu nhanh hơn thay vì quét toàn bộ bảng.
+  Tuy nhiên, index cũng tăng chi phí ghi và lưu trữ, vì thế cần sử dụng hợp lý.
+2. Phân biệt Clustered Index và Non-clustered Index. Khi nào nên dùng loại nào?
+  Trả lời:
+  Clustered Index sắp xếp dữ liệu vật lý trong bảng theo thứ tự. Mỗi bảng chỉ có thể có một Clustered Index.
+  Non-clustered Index không sắp xếp dữ liệu vật lý, mà lưu trữ một bản sao logic để tham chiếu đến dữ liệu gốc.
+  Clustered Index phù hợp với các cột thường được truy vấn theo thứ tự hoặc tìm kiếm theo phạm vi, ví dụ: ID, ngày tháng.
+  Non-clustered Index phù hợp với các truy vấn cần tìm kiếm nhanh trên một số cột cụ thể.
+3. Database sharding là gì?
+  Trả lời:
+  Sharding là kỹ thuật chia nhỏ một cơ sở dữ liệu lớn thành nhiều phần nhỏ hơn, được gọi là "shard".
+  Mỗi shard chứa một tập hợp con của dữ liệu và thường được lưu trữ trên các máy chủ khác nhau để tăng khả năng mở rộng và hiệu suất.
+4. Database partitioning là gì và các loại partitioning phổ biến?
+  Trả lời:
+  Partitioning là chia nhỏ một bảng lớn thành nhiều phần dựa trên giá trị của cột nào đó.
+  Các loại partitioning phổ biến:
+  Range Partitioning: Chia dữ liệu theo phạm vi giá trị (ví dụ: ngày tháng).
+  Hash Partitioning: Dữ liệu được chia bằng một hàm băm.
+  List Partitioning: Dữ liệu được phân chia dựa trên danh sách các giá trị cụ thể.
+5. ACID là gì và giải thích từng đặc điểm?
+  Trả lời:
+  Atomicity: Giao dịch là nguyên tử, hoặc toàn bộ giao dịch được thực thi hoặc không có gì.
+  Consistency: Dữ liệu luôn phải ở trạng thái nhất quán trước và sau giao dịch.
+  Isolation: Các giao dịch chạy đồng thời không được ảnh hưởng lẫn nhau.
+  Durability: Khi giao dịch hoàn tất, dữ liệu sẽ được lưu trữ vĩnh viễn, ngay cả khi hệ thống gặp sự cố.
+6. Database normalization là gì? Tại sao cần chuẩn hóa?
+  Trả lời:
+  Normalization là quá trình tổ chức dữ liệu trong cơ sở dữ liệu để giảm thiểu dư thừa và tránh inconsistency.
+  Chuẩn hóa giúp cải thiện hiệu năng, dễ bảo trì và giảm lỗi logic.
+7. Giải thích Boyce-Codd Normal Form (BCNF).
+  Trả lời:
+  Một bảng đạt BCNF nếu nó đạt 3NF và mọi phụ thuộc hàm đều có khóa ứng cử viên là vế trái.
+  Ví dụ: Nếu bảng có phụ thuộc hàm phi khóa (non-key dependency), thì không đạt BCNF.
+9. Cách bạn thiết kế bảng cơ sở dữ liệu từ nghiệp vụ thực tế?
+  Trả lời:
+  Phân tích yêu cầu nghiệp vụ để xác định các thực thể chính (entities) và mối quan hệ giữa chúng.
+  Xác định các thuộc tính của mỗi thực thể.
+  Áp dụng chuẩn hóa (1NF, 2NF, 3NF, BCNF) để loại bỏ dư thừa.
+  Thêm các index hoặc khóa ngoại để tối ưu hóa mối quan hệ.
+10. Primary Key và Foreign Key là gì?
+  Trả lời:
+  Primary Key: Là một hoặc nhiều cột dùng để xác định duy nhất một hàng trong bảng.
+  Foreign Key: Là một cột (hoặc nhiều cột) dùng để liên kết dữ liệu giữa hai bảng.
+11. Làm thế nào để kiểm tra và cải thiện hiệu năng truy vấn SQL?
+  Trả lời:
+  Sử dụng công cụ như EXPLAIN hoặc QUERY PLAN để phân tích truy vấn.
+  Thêm index vào các cột thường xuyên lọc hoặc tham gia (JOIN).
+  Tránh sử dụng các hàm trên cột trong điều kiện WHERE.
+12. Cách sử dụng Composite Index hiệu quả?
+  Trả lời:
+  Composite Index là index trên nhiều cột.
+  Thứ tự của cột trong composite index rất quan trọng, cần đặt cột thường xuyên lọc hoặc nhóm trước.
+17. Read Replicas là gì?
+Trả lời:
+Là các bản sao chỉ đọc của cơ sở dữ liệu chính, giúp giảm tải các truy vấn đọc.
+Được sử dụng trong các hệ thống yêu cầu hiệu năng đọc cao.
+18. Làm thế nào để triển khai read replica trong MySQL?
+  Trả lời:
+  Cấu hình master-slave replication.
+  Sử dụng lệnh:
+    CHANGE MASTER TO MASTER_HOST='master_host',
+    MASTER_USER='replica_user',
+    MASTER_PASSWORD='password';
+1. Làm thế nào để xác định và giảm thiểu các truy vấn chậm trong cơ sở dữ liệu?
+  Trả lời:
+  Sử dụng công cụ như EXPLAIN hoặc QUERY PLAN để phân tích các truy vấn.
+  Xác định các truy vấn đang quét toàn bộ bảng (Full Table Scan).
+  Thêm index vào các cột được sử dụng trong WHERE, JOIN, hoặc GROUP BY.
+  Sử dụng caching cho các truy vấn thường xuyên lặp lại.
+  Tránh sử dụng các hàm hoặc phép tính trực tiếp trên cột trong điều kiện lọc, ví dụ: WHERE YEAR(date) = 2023 nên chuyển thành WHERE date >= '2023-01-01' AND date < '2024-01-01'.
