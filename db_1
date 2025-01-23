@@ -71,3 +71,31 @@ Là các bản sao chỉ đọc của cơ sở dữ liệu chính, giúp giảm 
   Thêm index vào các cột được sử dụng trong WHERE, JOIN, hoặc GROUP BY.
   Sử dụng caching cho các truy vấn thường xuyên lặp lại.
   Tránh sử dụng các hàm hoặc phép tính trực tiếp trên cột trong điều kiện lọc, ví dụ: WHERE YEAR(date) = 2023 nên chuyển thành WHERE date >= '2023-01-01' AND date < '2024-01-01'.
+2. Các cách sử dụng Index sai lầm thường gặp là gì?
+Trả lời:
+  Tạo quá nhiều index trên một bảng dẫn đến chi phí ghi dữ liệu cao.
+  Sử dụng index trên các cột có giá trị lặp lại cao (low cardinality), ví dụ: cột gender chỉ có giá trị Male hoặc Female.
+  Không sử dụng index khi viết các truy vấn như:
+  SELECT * FROM users WHERE LOWER(email) = 'example@gmail.com';
+  Trong trường hợp này, cần sử dụng Functional Index (nếu hỗ trợ).
+3. Ưu điểm và nhược điểm của việc không chuẩn hóa (denormalization)?
+Trả lời:
+Ưu điểm:
+Truy xuất dữ liệu nhanh hơn vì không cần nhiều JOIN.
+Phù hợp cho các hệ thống phân tán hoặc big data.
+Nhược điểm:
+Tăng dư thừa dữ liệu (data redundancy).
+Khó bảo trì khi có thay đổi dữ liệu vì phải cập nhật nhiều nơi.
+4. Làm thế nào để xác định mối quan hệ giữa các bảng trong database từ yêu cầu nghiệp vụ?
+Trả lời:
+Phân tích các thực thể chính (entities) từ yêu cầu, ví dụ: User, Order, Product.
+Xác định các mối quan hệ giữa thực thể:
+One-to-One: Ví dụ, một user chỉ có một hồ sơ chi tiết.
+One-to-Many: Ví dụ, một user có thể có nhiều đơn hàng.
+Many-to-Many: Ví dụ, một sản phẩm có thể thuộc nhiều danh mục, và một danh mục có thể chứa nhiều sản phẩm.
+Thiết kế các bảng với khóa chính (Primary Key) và khóa ngoại (Foreign Key) để thể hiện các mối quan hệ.
+7. Làm thế nào để đảm bảo tính Consistency trong hệ thống cơ sở dữ liệu phân tán?
+Trả lời:
+Sử dụng các cơ chế đồng bộ như Two-Phase Commit (2PC) hoặc Consensus Protocols (ví dụ: Paxos, Raft).
+Áp dụng chiến lược Eventual Consistency cho các hệ thống yêu cầu hiệu năng cao (như NoSQL).
+
